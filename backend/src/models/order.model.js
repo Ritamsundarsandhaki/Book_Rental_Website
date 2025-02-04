@@ -32,9 +32,12 @@ const orderschema= mongoose.Schema(
             type:String
         
         },
-        shopkeeperId:{
+        shopkeeperId:[{
             type:mongoose.Schema.Types.ObjectId,
             req:"Shoopkeeper",
-        }
+        }]
     }
 )
+
+const Order = mongoose.model("order", orderschema);
+export default Order;

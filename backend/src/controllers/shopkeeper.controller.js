@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import Shopkeeper from "../models/shopkeeper.model.js";
 import { generatetooken } from "../lib/util.js";
-import Prodect from "../models/prodect.model.js";
+import Product from '../models/prodect.model.js'
 
 export const signup = async (req, res, next) => {
   const { fullName, emailId, mobileNo, password, proffilePic, addresh } =
@@ -81,30 +81,31 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const addproduct = async (req, res, next) => {
-  console.log(req.body)
-  const { title, author, genery, stock, price, detail } = req.body;
-  try{
-    
-    if(!title||!author||!stock||!price ||!detail||!genery){
-        const error = new Error("All Filds are required");
-        error.statusCode = 400;
-        next(error);
-    }
-    
-    const newproduct = await Prodect.create({
-        title,
-        author,
-        stock,
-        genery,
-        price,
-        detail
-      });
+export const addProduct = async (req, res, next) => {
+  const { title, author, genrey, stock, price, detail,ShopkeeperId } = req.body;
 
-    res.status(200).json({message:"prodect addded sucessfully"})
-      
+  try {
+    if (!title || !author || !stock || !price || !detail || !genrey) {
+      const error = new Error("All fields are required");
+      error.statusCode = 400;
+      return next(error);
+    }
+    const id ='67a09679573b9eae3cf48e19'
+    const newProduct = new Product({
+      title,
+      author,
+      stock,
+      price,
+      detail,
+      genrey,
+      ShopkeeperId: id, // Assuming authentication middleware sets req.user
+    });
+
+    await newProduct.save();
+    const updateProduct = await Shopkeeper.findByIdAndUpdate(id, {  $push: { product: newProduct._id },},)
+
+    res.status(201).json({ message: "Product added successfully" });
+  } catch (error) {
+    next(error);
   }
-catch(error){
- next(error)
-}
 };

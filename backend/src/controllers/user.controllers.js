@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
 import { generatetooken } from "../lib/util.js";
+import OrderModel from "../models/order.model.js"
 
 export const signup = async (req, res, next) => {
   const { fullName, emailId, mobileNo, password, proffilePic, addresh } =
@@ -85,3 +86,31 @@ export const rent = (req, res, next) => {
   const { id } = req.body; // Get ID from query parameter
   console.log("ID:", id);
 };
+
+
+export const Order=async(req,res,next)=>{
+  const {userid,bookId,rentalDuration,totalPrice,deliveryAddresh,shopkeeperId}= req.body
+
+  try{
+    if(!userid||!bookId||!rentalDuration||!totalPrice||!deliveryAddresh||!shopkeeperId){
+      const error = new Error("All Filds are required");
+      error.statusCode = 400;
+      next(error);
+    }
+
+    const newOrderModel = new OrderModel({
+      userid,
+      bookId,
+      rentalDuration,
+      totalPrice,
+      deliveryAddresh,
+      shopkeeperId
+    });
+
+    await newOrderModel.save();
+    res.status(200).json({ message: "Order Placed Sucssfully" });
+  }
+  catch(error){
+    next(error);
+  }
+}
