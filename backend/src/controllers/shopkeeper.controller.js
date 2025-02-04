@@ -82,15 +82,17 @@ export const login = async (req, res, next) => {
 };
 
 export const addproduct = async (req, res, next) => {
+  console.log(req.body)
   const { title, author, genery, stock, price, detail } = req.body;
   try{
+    
     if(!title||!author||!stock||!price ||!detail||!genery){
         const error = new Error("All Filds are required");
         error.statusCode = 400;
         next(error);
     }
     
-    const product = await product.create({
+    const newproduct = await Prodect.create({
         title,
         author,
         stock,
@@ -98,6 +100,8 @@ export const addproduct = async (req, res, next) => {
         price,
         detail
       });
+
+    res.status(200).json({message:"prodect addded sucessfully"})
       
   }
 catch(error){
