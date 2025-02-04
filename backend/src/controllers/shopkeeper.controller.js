@@ -6,6 +6,7 @@ import Product from '../models/prodect.model.js'
 export const signup = async (req, res, next) => {
   const { fullName, emailId, mobileNo, password, proffilePic, addresh } =
     req.body;
+    console.log(req.body)
   try {
     if (!fullName || !emailId || !mobileNo || !password) {
       const error = new Error("All Filds are required");
@@ -82,7 +83,9 @@ export const login = async (req, res, next) => {
 };
 
 export const addProduct = async (req, res, next) => {
-  const { title, author, genrey, stock, price, detail,ShopkeeperId } = req.body;
+    
+  const { title, author, genrey, stock, price, detail,} = req.body;
+  const ShopkeeperId = req.decode_Data._id
 
   try {
     if (!title || !author || !stock || !price || !detail || !genrey) {
@@ -98,7 +101,7 @@ export const addProduct = async (req, res, next) => {
       price,
       detail,
       genrey,
-      ShopkeeperId: id, // Assuming authentication middleware sets req.user
+      ShopkeeperId // Assuming authentication middleware sets req.user
     });
 
     await newProduct.save();

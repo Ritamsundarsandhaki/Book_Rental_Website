@@ -4,7 +4,7 @@ import { generatetooken } from "../lib/util.js";
 import OrderModel from "../models/order.model.js"
 
 export const signup = async (req, res, next) => {
-  const { fullName, emailId, mobileNo, password, proffilePic, addresh } =
+  const { fullName, emailId, mobileNo, password, proffilePic, address } =
     req.body;
   try {
     if (!fullName || !emailId || !mobileNo || !password) {

@@ -25,7 +25,7 @@ import mongoose from "mongoose";
                 type:mongoose.Schema.Types.ObjectId,
                 ref:'Order'
             }
-        ],addresh:{
+        ],address:{
             type: String,
             require:true,
             default:null,
