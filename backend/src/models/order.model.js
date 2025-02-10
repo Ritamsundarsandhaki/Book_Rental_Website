@@ -5,10 +5,12 @@ const orderschema= mongoose.Schema(
         userid:{
             type:mongoose.Schema.Types.ObjectId,
             ref:"User",
-        },bookId:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"Product",
-        },
+        },bookId:[
+            {
+                type:mongoose.Schema.Types.ObjectId,
+                ref:"Product",
+            },
+        ] ,
         status:{
             type:String,
             emum:[

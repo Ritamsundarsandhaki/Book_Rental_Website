@@ -21,7 +21,7 @@ function Admin_dashbord() {
         {/* Users Card */}
         <div className="bg-yellow-500 text-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold">Total Users</h2>
-          <p className="text-4xl mt-2">75</p>
+          <p className="text-4xl mt-2">75+</p>
         </div>
       </div>
 

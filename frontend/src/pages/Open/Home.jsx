@@ -2,7 +2,10 @@ import React from 'react'
 
 function Home() {
   return (
-    <div>Home</div>
+    <div className='grid md:grid-rows-3 grid-flow-col sm:grid-row-3 gap-[4px]'>Home
+      
+    </div>
+    
   )
 }
 
