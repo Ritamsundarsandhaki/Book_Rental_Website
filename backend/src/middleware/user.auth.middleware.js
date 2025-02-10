@@ -4,7 +4,7 @@ import Shopkeeper from '../models/shopkeeper.model.js';
 const TokenGard = async (req,res,next) => {
     console.log(req)
     try{
-        const token = req.cookies.test;
+        const token = req.cookies.token;
         console.log(token);
         if(!token){
             const error = new Error("Access Denied");

@@ -4,7 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { connectDb } from "./lib/db.js";
 import userRouter from "./routes/user.routes.js";
-import ShopkeeperRouter from "./routes/shopkeeper.routers.js";
+import ShopkeeperRouter from "./routes/shopkeeper.routes.js";
 
 const app = express();
 app.use(cors());
