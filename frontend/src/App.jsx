@@ -14,7 +14,7 @@ import Product_details from "./pages/Open/product_details";
 function App() {
   // Mock authentication state
   const isAuthenticated = "wihfdjasasan";
-  const userRole = "user"; // "admin" or "shopkeeper"
+  const userRole = "admin"; // "admin" or "shopkeeper"
 
   return (
     <Router>
