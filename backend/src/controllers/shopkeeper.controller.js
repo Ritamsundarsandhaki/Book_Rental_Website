@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import Shopkeeper from "../models/shopkeeper.model.js";
-import { generatetooken } from "../lib/util.js";
+import generateToken from "../lib/util.js";
 import Product from '../models/prodect.model.js'
 
 export const signup = async (req, res, next) => {
@@ -75,7 +75,7 @@ export const login = async (req, res, next) => {
       type: "shopkeeper",
     };
     console.log(dataset);
-    generatetooken(dataset, res);
+    generateToken(dataset,res)
     res.status(200).json({ message: "Wellcome Back" });
   } catch (error) {
     next(error);
@@ -83,9 +83,10 @@ export const login = async (req, res, next) => {
 };
 
 export const addProduct = async (req, res, next) => {
-    
+
   const { title, author, genrey, stock, price, detail,} = req.body;
   const ShopkeeperId = req.decode_Data._id
+  console.log(ShopkeeperId)
 
   try {
     if (!title || !author || !stock || !price || !detail || !genrey) {
@@ -106,7 +107,7 @@ export const addProduct = async (req, res, next) => {
 
     await newProduct.save();
     const updateProduct = await Shopkeeper.findByIdAndUpdate(id, {  $push: { product: newProduct._id },},)
-
+    console.log(updateProduct)
     res.status(201).json({ message: "Product added successfully" });
   } catch (error) {
     next(error);

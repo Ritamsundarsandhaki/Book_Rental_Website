@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+@theme {
+  --breakpoint-*: initial; /* Reset default breakpoints */
+  --breakpoint-mobile: 28rem; /* 450px */
+  --breakpoint-tablet: 50rem; /* 800px */
+  --breakpoint-laptop: 64rem; /* 1024px */
+  --breakpoint-desktop: 80rem; /* 1280px */
+}

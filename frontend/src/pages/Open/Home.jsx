@@ -1,11 +1,9 @@
 import React from 'react'
+import Navbar from '../../components/Navbar';
 
 function Home() {
   return (
-    <div className='grid md:grid-rows-3 grid-flow-col sm:grid-row-3 gap-[4px]'>Home
-      
-    </div>
-    
+    <div>Home</div>
   )
 }
 
