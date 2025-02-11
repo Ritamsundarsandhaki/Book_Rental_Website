@@ -2,7 +2,7 @@ import React from 'react'
 
 function Admin_catagary() {
   return (
-    <div>Admin_catagary</div>
+    <div class='place-content-centerw h-screen'> Admin_catagary</div>
   )
 }
 

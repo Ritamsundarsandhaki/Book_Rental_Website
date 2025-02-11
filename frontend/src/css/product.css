@@ -1,0 +1,16 @@
+.banner h1{
+    text-shadow: 0 0 12px black;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 900;
+}
+
+@media screen and (max-width: 800px) {
+    .product-master-part1{
+        display: none;
+    }
+  }
+.add_to_cart-btn{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+  

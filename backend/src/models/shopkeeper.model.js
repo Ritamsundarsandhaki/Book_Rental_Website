@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const shopkeeperschema = mongoose.Schema({
-  fullnamer: {
+  fullname: {
     type: String,
     require: true,
   },

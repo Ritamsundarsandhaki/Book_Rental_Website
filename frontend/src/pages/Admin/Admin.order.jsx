@@ -45,10 +45,10 @@ function Admin_order() {
                 </td>
                 <td className="border p-2">{order.total}</td>
                 <td className="border p-2">
-                  <button className="bg-blue-500 text-white px-4 py-1 rounded mr-2">
+                  <button className="bg-blue-500 text-white px-2.5 py-1 m-3 rounded mr-2">
                     View
                   </button>
-                  <button className="bg-red-500 text-white px-4 py-1 rounded">
+                  <button className="bg-red-500 text-white p-1 rounded my-1">
                     Delete
                   </button>
                 </td>

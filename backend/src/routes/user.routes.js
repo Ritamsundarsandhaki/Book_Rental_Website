@@ -7,8 +7,7 @@ const Router = express.Router();
 
 Router.post("/signup",signup)
 Router.post("/login",login)
-Router.post('/order',Order)
-Router.post('/test',TokenGard)
+Router.post('/order',TokenGard,Order)
 
 
 export default Router;
