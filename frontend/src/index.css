@@ -7,3 +7,8 @@
   --breakpoint-laptop: 64rem; /* 1024px */
   --breakpoint-desktop: 80rem; /* 1280px */
 }
+@media (max-width:50rem){
+    .hide-none{
+      display: none;
+    }
+}
