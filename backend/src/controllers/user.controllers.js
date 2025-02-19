@@ -100,7 +100,7 @@ export const Order = async (req, res, next) => {
       return next(error);
     }
 
-    await OrderModel.create({
+   const Order= await OrderModel({
       userId,
       bookId,
       rentalDuration,
@@ -109,6 +109,7 @@ export const Order = async (req, res, next) => {
       shopkeeperId,
     });
 
+    Order.save();
     res.status(201).json({ message: "Order placed successfully" });
   } catch (error) {
     next(error);

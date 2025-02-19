@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import Rider from "../models/rider.model.js";
-import { generatetooken } from "../lib/util.js";
+import { ge } from "../lib/util.js";
 
 export const signup = async (req, res, next) => {
   const { riderName, emailId, mobileNo, password, latitude, longitude, bikeNo } = req.body;
