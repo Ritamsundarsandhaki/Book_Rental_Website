@@ -25,7 +25,7 @@ app.use((err, req, res, next) => {
   res.status(StatusCode).json({ message: err.message });
 });
 
-const PORT = 2000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`server started at ${PORT} `);
   connectDb();

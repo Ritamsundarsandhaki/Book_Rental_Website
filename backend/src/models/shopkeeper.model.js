@@ -26,7 +26,7 @@ const shopkeeperschema = mongoose.Schema({
       ref: "Order",
     },
   ],
-  product :[
+  products :[
     {
         type: mongoose.Schema.Types.ObjectId,
         ref:"product"

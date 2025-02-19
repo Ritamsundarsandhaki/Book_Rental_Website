@@ -83,10 +83,8 @@ export const login = async (req, res, next) => {
 };
 
 export const addProduct = async (req, res, next) => {
-
-  const { title, author, genrey, stock, price, detail,} = req.body;
-  const ShopkeeperId = req.decode_Data._id
-  console.log(ShopkeeperId)
+  const { title, author, genrey, stock, price, detail } = req.body;
+  const ShopkeeperId = req.decode_Data._id; // Get Shopkeeper ID from decoded token
 
   try {
     if (!title || !author || !stock || !price || !detail || !genrey) {
@@ -94,7 +92,8 @@ export const addProduct = async (req, res, next) => {
       error.statusCode = 400;
       return next(error);
     }
-    const id ='67a09679573b9eae3cf48e19'
+
+    // Create new product
     const newProduct = new Product({
       title,
       author,
@@ -102,14 +101,31 @@ export const addProduct = async (req, res, next) => {
       price,
       detail,
       genrey,
-      ShopkeeperId // Assuming authentication middleware sets req.user
+      ShopkeeperId,
     });
 
     await newProduct.save();
-    const updateProduct = await Shopkeeper.findByIdAndUpdate(id, {  $push: { product: newProduct._id },},)
-    console.log(updateProduct)
-    res.status(201).json({ message: "Product added successfully" });
+
+    // Update Shopkeeper schema with new product
+    const updatedShopkeeper = await Shopkeeper.findByIdAndUpdate(
+      ShopkeeperId,
+      { $push: { products: newProduct._id } }, // Push product reference to shopkeeper's products array
+      { new: true } // Return updated shopkeeper document
+    );
+
+    if (!updatedShopkeeper) {
+      return next(new Error("Shopkeeper not found"));
+    }
+
+    res.status(201).json({
+      message: "Product added successfully",
+      product: newProduct,
+      shopkeeper: updatedShopkeeper
+    });
+
   } catch (error) {
     next(error);
   }
 };
+
+ 
