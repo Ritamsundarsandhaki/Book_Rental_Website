@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import { connectDb } from "./lib/db.js";
 import userRouter from "./routes/user.routes.js";
 import ShopkeeperRouter from "./routes/shopkeeper.routes.js";
-import RiderRouter from "./routes/rider.routes.js";
+
 
 const app = express();
 app.use(cors());
@@ -17,7 +17,7 @@ app.use(cookieParser())
 
 app.use("/api/user", userRouter);
 app.use("/api/shopkeeper", ShopkeeperRouter);
-app.use ("/api/rider/", RiderRouter)
+
 
 app.use((err, req, res, next) => {
   console.log(err.stack);
