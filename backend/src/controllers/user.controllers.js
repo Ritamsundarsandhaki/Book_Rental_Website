@@ -175,3 +175,31 @@ export const MyOrder = async (req, res, next) => {
   }
 };
 
+
+export const UpdateOrderStatusByUser = async (req, res, next) => {
+  try {
+    const userId = req.decode_Data._id; // Extract user ID from token
+    const { orderId, status } = req.body; // Get order ID and new status from request
+
+    const validStatuses = ["return"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status update. Users can only update status to 'return'." });
+    }
+
+    // Find and update order status
+    const order = await OrderModel.findOneAndUpdate(
+      { _id: orderId, userid: userId },
+      { status: status },
+      { new: true }
+    );
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found or unauthorized" });
+    }
+
+    res.status(200).json({ message: "Order status updated successfully by user", order });
+  } catch (error) {
+    next(error);
+  }
+};
+

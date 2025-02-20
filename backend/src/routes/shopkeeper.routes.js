@@ -1,5 +1,5 @@
 import express from "express"
-import { signup ,login,addProduct, showproduct,ShopkeeperOrders} from "../controllers/shopkeeper.controller.js";
+import { signup ,login,addProduct, showproduct,ShopkeeperOrders,UpdateOrderStatus} from "../controllers/shopkeeper.controller.js";
 import TokenGard from "../middleware/user.auth.middleware.js";
  
 
@@ -10,6 +10,7 @@ Router.post("/login",login)
 Router.post("/addproduct",TokenGard,addProduct)
 Router.get("/showproduct",TokenGard,showproduct)
 Router.get("/ShopkeeperOrders",TokenGard,ShopkeeperOrders)
+Router.post("/UpdateOrderStatus",TokenGard,UpdateOrderStatus)
 
 
 export default Router;

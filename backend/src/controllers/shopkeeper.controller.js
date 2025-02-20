@@ -186,3 +186,38 @@ export const ShopkeeperOrders = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const UpdateOrderStatus = async (req, res, next) => {
+  try {
+    const shopkeeperId = req.decode_Data._id; // Extract shopkeeper ID from token
+    const { orderId, status } = req.body; // Get order ID and new status from request
+
+    const validStatuses = ["pending", "conform", "delivered", "return", "accepted"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status update" });
+    }
+
+    // Find and update order status
+    const order = await OrderModel.findOneAndUpdate(
+      { _id: orderId, shopkeeperId: shopkeeperId },
+      { status: status },
+      { new: true }
+    );
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found or unauthorized" });
+    }
+
+    // If status is "conform", add order ID to shopkeeper's rental history
+    if (status === "conform") {
+      await Shopkeeper.findByIdAndUpdate(shopkeeperId, {
+        $push: { rentelHistory: orderId }
+      });
+    }
+
+    res.status(200).json({ message: "Order status updated successfully", order });
+  } catch (error) {
+    next(error);
+  }
+};
