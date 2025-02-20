@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import Shopkeeper from "../models/shopkeeper.model.js";
 import generateToken from "../lib/util.js";
-import Product from '../models/prodect.model.js'
+import Product from '../models/prodect.model.js';
+import OrderModel from '../models/order.model.js'
 
 export const signup = async (req, res, next) => {
   const { fullName, emailId, mobileNo, password, proffilePic, addresh } =
@@ -157,3 +158,31 @@ export const showproduct = async (req, res, next) => {
   }
 };
 
+export const ShopkeeperOrders = async (req, res, next) => {
+  try {
+    const shopkeeperId = req.decode_Data._id; // Extract shopkeeper ID from token
+
+    if (!shopkeeperId) {
+      return res.status(400).json({ message: "Shopkeeper ID is required" });
+    }
+
+    console.log(shopkeeperId);
+    
+    // Fetch all orders that contain products from this shopkeeper
+    const orders = await OrderModel.find({ shopkeeperId: shopkeeperId })
+      .populate("bookId") // Populate book details
+      .populate("userid", "fullName emailId") // Populate user details
+      .populate("shopkeeperId", "fullName emailId"); // Populate shopkeeper details
+    
+    console.log(orders);
+
+    if (!orders.length) {
+      return res.status(404).json({ message: "No orders found for this shopkeeper" });
+    }
+
+    res.status(200).json({ message: "Orders retrieved successfully", orders });
+  
+  } catch (error) {
+    next(error);
+  }
+};

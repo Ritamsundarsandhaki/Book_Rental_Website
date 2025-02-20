@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import Product from "../models/prodect.model.js";
 import generateToken from "../lib/util.js";
 import OrderModel from "../models/order.model.js";
+import Shopkeeper from "../models/shopkeeper.model.js";
 
 export const signup = async (req, res, next) => {
   const { fullName, emailId, mobileNo, password, profilePic, address } = req.body;
@@ -86,9 +87,13 @@ export const rent = (req, res, next) => {
 };
 
 
+
+
 export const Order = async (req, res, next) => {
   try {
+
     const userId = req.decode_Data._id; // Extract user ID from token
+    console.log(userId)
     const { bookId, rentalDuration } = req.body;
 
     // Validate input
@@ -101,9 +106,8 @@ export const Order = async (req, res, next) => {
     if (!userData || !userData.address) {
       return res.status(400).json({ message: "User address not found" });
     }
-   
+
     const deliveryAddress = userData.address;
-    console.log(deliveryAddress)
     let totalPrice = 0;
     let shopkeeperIds = new Set(); // Unique shopkeepers
     let booksToUpdate = [];
@@ -120,17 +124,17 @@ export const Order = async (req, res, next) => {
       shopkeeperIds.add(book.ShopkeeperId.toString()); // Store unique shopkeeper IDs
       booksToUpdate.push(book);
     }
-      
+
     // Convert Set to array
     shopkeeperIds = [...shopkeeperIds];
 
     // Create new order
     const newOrder = new OrderModel({
-      userId,
+      userid:userData._id,
       bookId,
       rentalDuration,
       totalPrice,
-      deliveryAddresh:deliveryAddress,
+      deliveryAddress,
       shopkeeperId: shopkeeperIds, // Store multiple shopkeepers
     });
 
@@ -148,3 +152,26 @@ export const Order = async (req, res, next) => {
     next(error);
   }
 };
+
+export const MyOrder = async (req, res, next) => {
+  try {
+    const userId = req.decode_Data._id; // Extract user ID from token
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    // Fetch all orders placed by the user and populate book details
+    const orders = await OrderModel.find({ userid:userId }).populate("bookId");
+
+    if (!orders.length) {
+      return res.status(404).json({ message: "No orders found for this user" });
+    }
+
+    res.status(200).json({ message: "Orders retrieved successfully", orders });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
