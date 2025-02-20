@@ -128,4 +128,32 @@ export const addProduct = async (req, res, next) => {
   }
 };
 
- 
+
+export const showproduct = async (req, res, next) => {
+  try {
+    const ShopkeeperId = req.decode_Data._id; // Extract shopkeeper's ID from token
+
+    // Find the shopkeeper and populate the 'products' field correctly
+    const shopkeeper = await Shopkeeper.findById(ShopkeeperId).populate("products");
+
+    if (!shopkeeper) {
+      return res.status(404).json({ message: "Shopkeeper not found" });
+    }
+
+    // Check if the shopkeeper has products
+    if (!shopkeeper.products || shopkeeper.products.length === 0) {
+      return res.status(200).json({ message: "No products found for this shopkeeper", products: [] });
+    }
+
+    // Log the populated products to verify
+    console.log("Populated Products:", shopkeeper.products);
+
+    res.status(200).json({
+      message: "Products retrieved successfully",
+      products: shopkeeper.products, // Send all products associated with this shopkeeper
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+

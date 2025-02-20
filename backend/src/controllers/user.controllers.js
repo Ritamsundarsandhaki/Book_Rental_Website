@@ -85,32 +85,65 @@ export const rent = (req, res, next) => {
   res.status(200).json({ message: `Renting process initiated for book ID: ${id}` });
 };
 
+
 export const Order = async (req, res, next) => {
-  console.log(req.decode_Data._id)
- const userId = req.decode_Data._id;
-  const {  bookId, rentalDuration, totalPrice, deliveryAddress, } = req.body;
-  const bookdata = await Product.findOne({_id:bookId});
-  console.log(bookdata)
- const shopkeeperId=bookdata.ShopkeeperId
   try {
-    if (!userId || !bookId || !rentalDuration || !totalPrice || !deliveryAddress || !shopkeeperId) {
-      console.log(userId,bookId,rentalDuration,totalPrice,deliveryAddress,shopkeeperId)
-      const error = new Error("All fields are required");
-      error.statusCode = 400;
-      return next(error);
+    const userId = req.decode_Data._id; // Extract user ID from token
+    const { bookId, rentalDuration } = req.body;
+
+    // Validate input
+    if (!userId || !Array.isArray(bookId) || bookId.length === 0 || !rentalDuration) {
+      return res.status(400).json({ message: "All fields are required and bookId must be a non-empty array" });
     }
 
-   const Order= await OrderModel({
+    // Fetch user details to check if address exists
+    const userData = await User.findById(userId);
+    if (!userData || !userData.address) {
+      return res.status(400).json({ message: "User address not found" });
+    }
+   
+    const deliveryAddress = userData.address;
+    console.log(deliveryAddress)
+    let totalPrice = 0;
+    let shopkeeperIds = new Set(); // Unique shopkeepers
+    let booksToUpdate = [];
+
+    // Fetch all books in a single query
+    const books = await Product.find({ _id: { $in: bookId } });
+
+    // Check if all books exist and are in stock
+    for (let book of books) {
+      if (book.stock <= 0) {
+        return res.status(400).json({ message: `Book "${book.title}" is out of stock` });
+      }
+      totalPrice += book.price * rentalDuration; // Calculate total price
+      shopkeeperIds.add(book.ShopkeeperId.toString()); // Store unique shopkeeper IDs
+      booksToUpdate.push(book);
+    }
+      
+    // Convert Set to array
+    shopkeeperIds = [...shopkeeperIds];
+
+    // Create new order
+    const newOrder = new OrderModel({
       userId,
       bookId,
       rentalDuration,
       totalPrice,
-      deliveryAddress,
-      shopkeeperId,
+      deliveryAddresh:deliveryAddress,
+      shopkeeperId: shopkeeperIds, // Store multiple shopkeepers
     });
 
-    Order.save();
-    res.status(201).json({ message: "Order placed successfully" });
+    await newOrder.save();
+
+    // Reduce stock for each ordered book
+    for (let book of booksToUpdate) {
+      book.stock -= 1;
+      await book.save();
+    }
+
+    res.status(201).json({ message: "Order placed successfully", order: newOrder });
+
   } catch (error) {
     next(error);
   }

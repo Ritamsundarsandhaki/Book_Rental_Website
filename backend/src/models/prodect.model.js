@@ -30,7 +30,7 @@ const productschema = mongoose.Schema({
   },
   ShopkeeperId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: Shopkeeper,
+    ref: "Shopkeeper",
     require: true,
   },
 });

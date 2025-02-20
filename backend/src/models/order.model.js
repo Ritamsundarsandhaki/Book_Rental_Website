@@ -11,10 +11,13 @@ const orderschema= mongoose.Schema(
                 ref:"Product",
             },
         ] ,
+        availability:[
+
+        ],
         status:{
             type:String,
             emum:[
-                "pending","accept","shipped","out for delivery","delivered","pickup","sucess",
+                "pending","conform","delivered","return","acepted",
             ],
             default:"pending",
         },
