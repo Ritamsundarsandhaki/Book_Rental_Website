@@ -25,9 +25,7 @@ const productschema = mongoose.Schema({
   detail: {
     type: String,
   },
-  imageOfBook: {
-    type: String,
-  },
+  imageOfBook:[{type:String}],
   ShopkeeperId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Shopkeeper",

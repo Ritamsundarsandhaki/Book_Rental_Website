@@ -2,7 +2,9 @@ import bcrypt from "bcrypt";
 import Shopkeeper from "../models/shopkeeper.model.js";
 import generateToken from "../lib/util.js";
 import Product from '../models/prodect.model.js';
-import OrderModel from '../models/order.model.js'
+import OrderModel from '../models/order.model.js';
+import cloudinary from "../lib/cloudinary.set.js";
+import fs from 'fs';
 
 export const signup = async (req, res, next) => {
   const { fullName, emailId, mobileNo, password, proffilePic, addresh } =
@@ -83,7 +85,29 @@ export const login = async (req, res, next) => {
   }
 };
 
+
 export const addProduct = async (req, res, next) => {
+
+  if (!req.file && (!req.files || req.files.length === 0)) {
+    return res.status(400).send({ error: 'No files uploaded or invalid file type' });
+}
+
+// Handle single or multiple file uploads
+const files = req.file ? [req.file] : req.files;
+
+// Upload files to Cloudinary
+const uploadResults = await Promise.all(files.map(async (file) => {
+    const result = await cloudinary.uploader.upload(file.path, {
+        folder: 'uploads',
+        resource_type: 'image'
+    });
+
+    // Remove the local file after upload
+    fs.unlinkSync(file.path);
+    return result.secure_url;
+}));
+
+console.log(uploadResults)
   const { title, author, genrey, stock, price, detail } = req.body;
   const ShopkeeperId = req.decode_Data._id; // Get Shopkeeper ID from decoded token
 
@@ -103,6 +127,7 @@ export const addProduct = async (req, res, next) => {
       detail,
       genrey,
       ShopkeeperId,
+      imageOfBook:uploadResults
     });
 
     await newProduct.save();
@@ -129,7 +154,73 @@ export const addProduct = async (req, res, next) => {
   }
 };
 
+export const updateProduct = async (req, res, next) => {
 
+  const { title, author, genrey, stock, price, detail ,productId} = req.body;
+  const ShopkeeperId = req.decode_Data._id; // Get Shopkeeper ID from decoded token
+
+  try {
+      // Find the product
+      const product = await Product.findById(productId);
+      if (!product) {
+          return res.status(404).json({ error: "Product not found" });
+      }
+
+      // Ensure only the shopkeeper who added the product can update it
+      if (product.ShopkeeperId.toString() !== ShopkeeperId.toString()) {
+          return res.status(403).json({ error: "Unauthorized to update this product" });
+      }
+
+      // Update only text fields (images remain unchanged)
+      product.title = title || product.title;
+      product.author = author || product.author;
+      product.genrey = genrey || product.genrey;
+      product.stock = stock || product.stock;
+      product.price = price || product.price;
+      product.detail = detail || product.detail;
+
+      // Save updated product
+      await product.save();
+
+      res.status(200).json({
+          message: "Product updated successfully",
+          product
+      });
+
+  } catch (error) {
+      next(error);
+  }
+};
+
+
+export const deleteProduct = async (req, res, next) => {
+    
+  const { productId} = req.body;
+  const ShopkeeperId = req.decode_Data._id; // Get Shopkeeper ID from decoded token
+
+  try {
+      // Find the product
+      const product = await Product.findById(productId);
+      if (!product) {
+          return res.status(404).json({ error: "Product not found" });
+      }
+
+      // Ensure only the shopkeeper who added the product can update it
+      if (product.ShopkeeperId.toString() !== ShopkeeperId.toString()) {
+          return res.status(403).json({ error: "Unauthorized to update this product" });
+      }
+
+      const delet = await Product.findByIdAndDelete(productId);
+
+      res.status(200).json({
+          message: "Product deleted successfully",
+          delet
+      });
+
+  } catch (error) {
+      next(error);
+  }
+};
 export const showproduct = async (req, res, next) => {
   try {
     const ShopkeeperId = req.decode_Data._id; // Extract shopkeeper's ID from token
@@ -221,3 +312,20 @@ export const UpdateOrderStatus = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const ShopkeeperProfile = async (req, res, next) => {
+  try {
+    const shopkeeperId = req.decode_Data._id;
+    
+    const shopkeeper = await Shopkeeper.findById(shopkeeperId).select("-password");
+    if (!shopkeeper) {
+      return res.status(404).json({ message: "Shopkeeper not found" });
+    }
+    
+    res.status(200).json({ message: "Shopkeeper profile retrieved successfully", shopkeeper });
+  } catch (error) {
+    next(error);
+  }
+};
+

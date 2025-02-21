@@ -203,3 +203,17 @@ export const UpdateOrderStatusByUser = async (req, res, next) => {
   }
 };
 
+export const UserProfile = async (req, res, next) => {
+  try {
+    const userId = req.decode_Data._id;
+    
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    res.status(200).json({ message: "User profile retrieved successfully", user });
+  } catch (error) {
+    next(error);
+  }
+};
