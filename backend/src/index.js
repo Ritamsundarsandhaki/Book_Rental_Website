@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import { connectDb } from "./lib/db.js";
 import userRouter from "./routes/user.routes.js";
 import ShopkeeperRouter from "./routes/shopkeeper.routes.js";
+import  HomeRouter from "./routes/open.routes.js";
+
 
 
 const app = express();
@@ -15,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser())
 
+app.use("/api",HomeRouter);
 app.use("/api/user", userRouter);
 app.use("/api/shopkeeper", ShopkeeperRouter);
 

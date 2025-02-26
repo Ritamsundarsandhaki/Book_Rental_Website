@@ -29,7 +29,10 @@ import mongoose from "mongoose";
             type: String,
             require:true,
             default:null,
-          }
+          },
+          prefrence:[
+            
+          ]
     }
  )
 

@@ -30,7 +30,10 @@ const productschema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Shopkeeper",
     require: true,
-  },
+  },viewes:{
+    type:Number,
+    default:0,
+  }
 });
 
 const Product = mongoose.model("Product", productschema);
