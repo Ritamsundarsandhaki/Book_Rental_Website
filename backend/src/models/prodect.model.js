@@ -1,41 +1,69 @@
 import mongoose from "mongoose";
 import Shopkeeper from "./shopkeeper.model.js";
+import { type } from "os";
 
-const productschema = mongoose.Schema({
+const productSchema = mongoose.Schema({
   title: {
     type: String,
-    require: true,
+    required: true,
   },
   author: {
     type: String,
-    require: true,
+    required: true,
   },
-  genery: {
+  genre: {
     type: String,
-    require: true,
+    required: true,
   },
   stock: {
     type: Number,
-    require: true,
+    required: true,
   },
-  price: {
+  MRP_price: {
     type: Number,
-    require: true,
+    required: true,
+  },
+  Rental_Price:{
+    type:Number,
+    required:true
   },
   detail: {
     type: String,
   },
-  imageOfBook:[{type:String}],
-  ShopkeeperId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Shopkeeper",
-    require: true,
-  },viewes:{
-    type:Number,
-    default:0,
-  }
+  imageOfBook: [{ type: String }],
+  shopkeeperId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "Shopkeeper", 
+    required: true,
+  },
+  views: { 
+    type: Number, 
+    default: 0,
+  },
+  reviews: [
+    {
+      username: {
+        type: String,
+        required: true,
+      },
+      star: {
+        type: Number,
+        required: true,
+        min: 1,
+        max: 5, // Ensuring the rating is between 1 and 5
+      },
+      reviewContent: {
+        type: String,
+        required: true,
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now, // Adds a timestamp for each review
+      },
+    },
+  ],
 });
 
-const Product = mongoose.model("Product", productschema);
+const Product = mongoose.model("Product", productSchema);
 
 export default Product;

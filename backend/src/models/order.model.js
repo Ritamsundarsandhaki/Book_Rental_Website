@@ -1,49 +1,47 @@
 import mongoose from "mongoose";
 
-const orderschema= mongoose.Schema(
+const orderSchema = mongoose.Schema(
     {
-        userid:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"User",
-            required:true
-        },bookId:[
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        bookId: [
             {
-                type:mongoose.Schema.Types.ObjectId,
-                ref:"Product",
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Product",
             },
-        ] ,
-        availability:[
-
         ],
-        status:{
-            type:String,
-            emum:[
-                "pending","conform","delivered","return","acepted",
-            ],
-            default:"pending",
+        availability: [], // Consider defining the expected data type
+        status: {
+            type: String,
+            enum: ["pending", "confirm", "delivered", "return", "accepted"],
+            default: "pending",
         },
-        rentalDuration:{
-            type:Number,
-            required:true,
+        rentalDuration: {
+            type: Number,
+            required: true,
         },
-        totalPrice:{
-            type:Number,
-            required:true,
+        totalPrice: {
+            type: Number,
+            required: true,
         },
-        deliveryAddresh:{
-            type:String,
-            require:true,
+        deliveryAddress: {
+            type: String,
+            required: true,
         },
-        riderId:{
-            type:String
-        
+        riderId: {
+            type: String,
         },
-        shopkeeperId:[{
-            type:mongoose.Schema.Types.ObjectId,
-            req:"Shoopkeeper",
-        }]
+        shopkeeperId: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Shopkeeper", // Corrected "Shoopkeeper"
+            },
+        ],
     }
-)
+);
 
-const Order = mongoose.model("order", orderschema);
+const Order = mongoose.model("Order", orderSchema);
 export default Order;

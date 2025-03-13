@@ -15,10 +15,11 @@ function Shopkeeper_main() {
 
       {/* Main Content Area */}
       <div className="flex-1 p-6 ml-64">
-        <h1 className="text-3xl font-bold mb-4">Shopkeeper Dashboard</h1>
+       
         
         <Routes>
-          <Route path="/dashbord" element={<Shopkeeper_dashbord />} />
+        <Route index element={<Shopkeeper_dashbord />} />
+          <Route path="/dashbord" element={<Shopkeeper_dashbord/>} />
           <Route path="/order" element={<Shopkeeper_order />} />
           <Route path="/product" element={<Shopkeeper_product />} />
           <Route path="/setting" element={<Shopkeeper_setting />} />

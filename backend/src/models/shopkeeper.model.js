@@ -1,55 +1,83 @@
 import mongoose from "mongoose";
 
-const shopkeeperschema = mongoose.Schema({
-  fullname: {
+const shopkeeperSchema = new mongoose.Schema({
+  fullName: {
     type: String,
-    require: true,
+    required: true,
+    trim: true,
   },
   emailId: {
     type: String,
-    require: true,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
   },
   mobileNo: {
     type: String,
-    require: true,
+    required: true,
+    unique: true,
+    trim: true,
   },
   password: {
     type: String,
-    require: true,
+    required: true,
   },
-  proffilePic: {
+  profilePic: {
     type: String,
   },
-  rentelHistory: [
+  rentalHistory: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Order",
     },
   ],
-  products :[
+  products: [
     {
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"Product"
-
-    }
-  ],
-  payment:{
-    upiId:{
-      type:String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
     },
-    amount:{
-        type:Number,
-        require:true,
-        default:0,
-    }
+  ],
+  payment: {
+    upiId: {
+      type: String,
+      trim: true,
+    },
+    amount: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
   },
-  addresh:{
+  address: {
+    city: {
+      type: String,
+      required: true,
+    },
+    pinCode: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+    landmark: {
+      type: String,
+    },
+  },
+  isVerified: {
+    type: Boolean,
+    default: false, 
+  },
+  otp: {
     type: String,
-    require:true,
-  }
+  },
+  otpExpiry: {
+    type: Date,
+  },
+}, { timestamps: true }); 
 
-});
-
-const Shopkeeper=mongoose.model("Shopkeeper",shopkeeperschema);
+const Shopkeeper = mongoose.model("Shopkeeper", shopkeeperSchema);
 
 export default Shopkeeper;

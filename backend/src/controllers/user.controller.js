@@ -5,43 +5,42 @@ import generateToken from "../lib/util.js";
 import OrderModel from "../models/order.model.js";
 import Shopkeeper from "../models/shopkeeper.model.js";
 
+
+
 export const signup = async (req, res, next) => {
-  const { fullName, emailId, mobileNo, password, profilePic, address } = req.body;
-
   try {
+    const { fullName, emailId, mobileNo, password, profilePic, address } = req.body;
+    console.log(fullName,emailId,mobileNo,password,address)
     if (!fullName || !emailId || !mobileNo || !password) {
-      const error = new Error("All fields are required");
-      error.statusCode = 400;
-      return next(error);
-    }
-    if (password.length < 8) {
-      const error = new Error("At least 8 characters required");
-      error.statusCode = 400;
-      return next(error);
+      return res.status(400).json({ message: "All fields are required" });
     }
 
-    const user = await User.findOne({ $or: [{ emailId }, { mobileNo }] });
-    if (user) {
-      const error = new Error("User already exists");
-      error.statusCode = 409;
-      return next(error);
+    if (password.length < 8) {
+      return res.status(400).json({ message: "Password must be at least 8 characters" });
+    }
+
+    const existingUser = await User.findOne({ $or: [{ emailId }, { mobileNo }] });
+    if (existingUser) {
+      return res.status(409).json({ message: "User already exists. Please log in." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
     await User.create({
       fullName,
       emailId,
-      password: hashedPassword,
       mobileNo,
-      profilePic,
+      password: hashedPassword,
+      profilePic: profilePic || "",
       address,
     });
 
-    res.status(201).json({ message: "User created successfully" });
+    res.status(201).json({ message: "Signup successful!" });
   } catch (error) {
     next(error);
   }
 };
+
 
 export const login = async (req, res, next) => {
   const { emailId, password } = req.body;

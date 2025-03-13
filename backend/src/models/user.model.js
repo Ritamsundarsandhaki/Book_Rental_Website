@@ -1,41 +1,41 @@
 import mongoose from "mongoose";
- const userschema= new mongoose.Schema(
-    {
-        fullName:{
-            type:String,
-            require: true,
-        },
-        emailId:{
-            type:String,
-            require:true,
-        },
-        mobileNo:{
-            type:String,
-            require:true,
-        },
-        password:{
-            type:String,
-            require:true,
-        },
-        proffilePic:{
-            type:String,
-        },
-        rentelHistory:[
-            {
-                type:mongoose.Schema.Types.ObjectId,
-                ref:'Order'
-            }
-        ],address:{
-            type: String,
-            require:true,
-            default:null,
-          },
-          prefrence:[
-            
-          ]
-    }
- )
 
- const User= mongoose.model("User",userschema)
+const userSchema = new mongoose.Schema(
+  {
+    fullName: {
+      type: String,
+      required: true, // Fixed "require" → "required"
+    },
+    emailId: {
+      type: String,
+      required: true, // Fixed "require" → "required"
+    },
+    mobileNo: {
+      type: String,
+      required: true, // Fixed "require" → "required"
+    },
+    password: {
+      type: String,
+      required: true, // Fixed "require" → "required"
+    },
+    profilePic: { // Fixed "proffilePic" → "profilePic"
+      type: String,
+    },
+    rentalHistory: [ // Fixed "rentelHistory" → "rentalHistory"
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
+    address: {
+      type: String,
+      required: true, // Fixed "require" → "required"
+      default: null,
+    },
+    preference: [], // Fixed "prefrence" → "preference"
+  }
+);
 
- export default User;
+const User = mongoose.model("User", userSchema);
+
+export default User;

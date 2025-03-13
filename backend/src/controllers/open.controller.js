@@ -23,7 +23,7 @@ export const Home = async (req, res, next) => {
         // Fetch product(s)
         const products = await Product.find(filter)
             .sort({ viewes: -1 })
-            .limit(5)
+            .limit(8)
             .lean();
 
         console.log("Products fetched:", products.length);
@@ -70,7 +70,7 @@ export const Home = async (req, res, next) => {
 
 export const Search = async (req, res, next) => {
     try {
-        const { title, author, genery } = req.body; // Get search input from request body
+        const { title, author, genery ,} = req.body; // Get search input from request body
 
         // Create a dynamic filter object
         let filter = {};
@@ -106,3 +106,28 @@ export const Search = async (req, res, next) => {
         });
     }
 };
+
+export const detail = async (req, res, next) => {
+    try {
+      const { productId } = req.params; // Get ID from URL params
+      const product = await Product.findById(productId);
+  
+      if (!product) {
+        return res.status(404).json({
+          success: false,
+          message: "Product not found",
+        });
+      }
+  
+      res.json({
+        success: true,
+        product,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Server error, please try again later",
+        error: error.message,
+      });
+    }
+  };

@@ -1,5 +1,5 @@
 import express from "express"
-import { login, signup ,Order,MyOrder,UpdateOrderStatusByUser,UserProfile} from "../controllers/user.controllers.js";
+import { login, signup ,Order,MyOrder,UpdateOrderStatusByUser,UserProfile} from "../controllers/user.controller.js";
 import TokenGard from "../middleware/user.auth.middleware.js";
 
 

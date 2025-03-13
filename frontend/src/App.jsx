@@ -9,55 +9,58 @@ import Home from "./pages/Open/Home";
 import Cart from "./pages/Open/cart";
 import Ebook from "./pages/Open/Ebook";
 import Product from "./pages/Open/Product";
-import Product_details from "./pages/Open/product_details";
+import Product_details from "./pages/Open/Product_details";
+import Signup from "./pages/Open/Signup";
+import Shopkeeper_signup from "./pages/Open/Shopkeeper_signup";
+import Footer from "./components/Footer";
 
 function App() {
-  // Mock authentication state
-  const isAuthenticated = "wihfdjasasan";
-  const userRole = "admin"; // "admin" or "shopkeeper"
-
+  const token = localStorage.getItem("token");
+  const userRole = localStorage.getItem("userType") || "gest"; 
+  // const userRole = 'admin'
   return (
+    <>
     <Router>
       <Routes>
-        {/* Public Route */}
-        <Route path="/" element={<Home/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/cart" element={<Cart/>} />
-        <Route path="/ebook" element={<Ebook/>} />
-        <Route path="/product" element={<Product/>} />
-        <Route path="/product/*" element={<Product_details/>} />
+        {/* Public Routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/shopkeeper_signup" element={<Shopkeeper_signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/cart/:bookId" element={<Cart />} />
+        <Route path="/ebook" element={<Ebook />} />
+        <Route path="/product" element={<Product />} />
+        <Route path="/product/:productId" element={<Product_details />} />
 
-        {/* Protected Admin Route */}
+        {/* Protected Routes */}
         <Route
           path="/admin/*"
           element={
             <ProtectedRoute
-              element={<Admin_main/>}
-              isAuthenticated={isAuthenticated}
+              element={<Admin_main />}
+              isAuthenticated={!!token}
               allowedRoles={["admin"]}
               userRole={userRole}
             />
           }
         />
-
-        {/* Protected Shopkeeper Route */}
         <Route
           path="/shopkeeper/*"
           element={
             <ProtectedRoute
-              element={<Shopkeeper_main/>}
-              isAuthenticated={isAuthenticated}
+              element={<Shopkeeper_main />}
+              isAuthenticated={!!token}
               allowedRoles={["shopkeeper"]}
               userRole={userRole}
             />
           }
         />
-      <Route
+        <Route
           path="/user/*"
           element={
             <ProtectedRoute
-              element={<User_main/>}
-              isAuthenticated={isAuthenticated}
+              element={<User_main />}
+              isAuthenticated={!!token}
               allowedRoles={["user"]}
               userRole={userRole}
             />
@@ -65,6 +68,8 @@ function App() {
         />
       </Routes>
     </Router>
+   
+    </>
   );
 }
 

@@ -1,0 +1,151 @@
+.section3-h1{
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-left: 3rem;
+}
+
+/* Add this to your CSS file (e.g., home.css) */
+.horizontal-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+  
+  .horizontal-scroll-container::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .horizontal-scroll-container::-webkit-scrollbar-thumb {
+    background-color: #2C6E49;
+    border-radius: 4px;
+  }
+  
+  .horizontal-scroll-container::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+  
+  .horizontal-scroll-item {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: 300px; /* Adjust width as needed */
+  }
+
+  /* Add this to your CSS file (e.g., home.css) */
+.authors-section {
+    padding: 4rem 0;
+    background-color: #f9f9f9;
+  }
+  
+  .authors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+  }
+  
+  .author-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    text-align: center;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .author-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .author-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+    border: 4px solid #2C6E49;
+  }
+  
+  .author-name {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2C6E49;
+    margin-bottom: 0.5rem;
+  }
+  
+  .author-bio {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  
+  .author-books {
+    font-size: 0.875rem;
+    color: #444;
+    font-style: italic;
+  }
+
+  /* Add this to your CSS file (e.g., home.css) */
+.testimonials-section {
+    padding: 4rem 0;
+    background-color: #ffffff;
+  }
+  
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+  }
+  
+  .testimonial-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+  }
+  
+  .testimonial-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .testimonial-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+    border: 3px solid #2C6E49;
+  }
+  
+  .testimonial-name {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2C6E49;
+    margin-bottom: 0.5rem;
+  }
+  
+  .testimonial-text {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+  
+  .testimonial-rating {
+    display: flex;
+    justify-content: center;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  .testimonial-rating svg {
+    width: 20px;
+    height: 20px;
+    fill: #FFD700; /* Gold color for stars */
+  }
